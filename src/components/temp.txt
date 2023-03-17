@@ -1,0 +1,39 @@
+   <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              <li className="nav-item">
+                <a className="nav-link" href="/business">
+                  Business
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/entertainment">
+                  Entertainment
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/general">
+                  General
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/health">
+                  Health
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/sciences">
+                  Sciences
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/sports">
+                  Sports
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/technology">
+                  Technology
+                </a>
+              </li>
+            </ul>
+
+            https://newsapi.org/v2/top-headlines?country=in&category=general&apiKey=663be6ff529e406889d0fb6fd81cedf1&page=1&pageSize=20

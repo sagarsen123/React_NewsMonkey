@@ -42,11 +42,13 @@ export class News extends Component {
 
   async componentDidMount(){
     this.setState({loader:true})
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.state.country}&category=${this.state.category}&apiKey=98460566d55e45b9b2ddd7ef6d4f920b&page=${this.state.page}&pageSize=${this.state.NewsPerPage}`
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.state.country}&category=${this.state.category}&apiKey=663be6ff529e406889d0fb6fd81cedf1&page=${this.state.page}&pageSize=${this.state.NewsPerPage}`
+    // let url = `  https://newsapi.org/v2/top-headlines?country=in&category=general&apiKey=663be6ff529e406889d0fb6fd81cedf1&page=1&pageSize=20`
     let data = await fetch(url);
     
     
     let receivedJson = await data.json();
+  console.log(receivedJson)
       setTimeout(()=>{
 
         this.setState({loader:false});
@@ -57,7 +59,7 @@ export class News extends Component {
   handleNextClick = async () =>{
     this.setState({loader:true});
 
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.state.country}&category=${this.state.category}&apiKey=98460566d55e45b9b2ddd7ef6d4f920b&page=${this.state.page+1}&pageSize=${this.state.NewsPerPage}`
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.state.country}&category=${this.state.category}&apiKey=663be6ff529e406889d0fb6fd81cedf1&page=${this.state.page+1}&pageSize=${this.state.NewsPerPage}`
     
       let data = await fetch(url);
 
@@ -80,11 +82,12 @@ export class News extends Component {
     
     this.setState({loader:true});
 
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.state.country}&category=${this.state.category}&apiKey=98460566d55e45b9b2ddd7ef6d4f920b&page=${this.state.page-1}&pageSize=${this.state.NewsPerPage}`
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.state.country}&category=${this.state.category}&apiKey=663be6ff529e406889d0fb6fd81cedf1&page=${this.state.page-1}&pageSize=${this.state.NewsPerPage}`
     let data = await fetch(url);
 
   
     let receivedJson = await data.json();
+    
       setTimeout(()=>{
 
         this.setState({loader:false});
@@ -102,7 +105,7 @@ export class News extends Component {
         <h2 className="container  center">News Monkey Top Headlines</h2>
         {this.state.loader && <Loader/>}
         <div className=" d-flex justify-content-center align-items-center flex-wrap">
-          {!this.state.loader && this.state.articles.map((element) => {
+          {!this.state.loader&& this.state.articles && this.state.articles.map((element) => {
             return   <div className="d-flex justify-content-center col-md-4 " key={element.url}>
               <NewsComponent
                 title={
