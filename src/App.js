@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="App">
         <Navbar/>
-        <News/>
+        <News MaxNewsPerPage={21} Currcountry='in' Currcategory='sport'/>
     </div>
   );
 }
