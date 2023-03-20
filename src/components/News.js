@@ -35,9 +35,15 @@ export class News extends Component {
       country:Currcountry,
       category:Currcategory
     };
+
+    document.title = `${this.capitalize(Currcategory)} | My News Monkey `
+  
   
   }
-
+  capitalize = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+    
+  }
 
 
   async componentDidMount(){
@@ -52,37 +58,57 @@ export class News extends Component {
       setTimeout(()=>{
 
         this.setState({loader:false});
-      },2000)
+      },1500)
     this.setState({articles:receivedJson.articles})
   }
   
   handleNextClick = async () =>{
-    this.setState({loader:true});
+    // this.setState({loader:true});
 
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.state.country}&category=${this.state.category}&apiKey=663be6ff529e406889d0fb6fd81cedf1&page=${this.state.page+1}&pageSize=${this.state.NewsPerPage}`
+    // let url = `https://newsapi.org/v2/top-headlines?country=${this.state.country}&category=${this.state.category}&apiKey=663be6ff529e406889d0fb6fd81cedf1&page=${this.state.page+1}&pageSize=${this.state.NewsPerPage}`
     
-      let data = await fetch(url);
+    //   let data = await fetch(url);
 
       
-      let receivedJson = await data.json();
-      setTimeout(()=>{
+    //   let receivedJson = await data.json();
+    //   setTimeout(()=>{
 
-        this.setState({loader:false});
-      },2000)
-      if(receivedJson.status === "error"){
-        this.setState({nextDisabled: true});
-        return;
-      }
-      
-      this.setState({articles:receivedJson.articles, page:this.state.page+1})
-
+    //     this.setState({loader:false});
+    //   },2000)
+    //   if(receivedJson.status === "error"){
+    //     this.setState({nextDisabled: true});
+    //     return;
+    //   }
+    //   window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+    //   this.setState({articles:receivedJson.articles, page:this.state.page+1})
+    this.setState({page : this.state.page + 1});
+    this.updateNews(this.page)
   }
 
   handlePrevClick = async () =>{
     
+    // this.setState({loader:true});
+
+    // let url = `https://newsapi.org/v2/top-headlines?country=${this.state.country}&category=${this.state.category}&apiKey=663be6ff529e406889d0fb6fd81cedf1&page=${this.state.page-1}&pageSize=${this.state.NewsPerPage}`
+    // let data = await fetch(url);
+
+  
+    // let receivedJson = await data.json();
+    
+    //   setTimeout(()=>{
+
+    //     this.setState({loader:false});
+    //   },2000)
+    //   window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+    // this.setState({articles:receivedJson.articles,page:this.state.page - 1})
+    this.setState({page : this.page - 1});
+    this.updateNews(this.state.page)
+  }
+
+  async updateNews(page){
     this.setState({loader:true});
 
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.state.country}&category=${this.state.category}&apiKey=663be6ff529e406889d0fb6fd81cedf1&page=${this.state.page-1}&pageSize=${this.state.NewsPerPage}`
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.state.country}&category=${this.state.category}&apiKey=663be6ff529e406889d0fb6fd81cedf1&page=${this.state.page}&pageSize=${this.state.NewsPerPage}`
     let data = await fetch(url);
 
   
@@ -91,18 +117,20 @@ export class News extends Component {
       setTimeout(()=>{
 
         this.setState({loader:false});
-      },2000)
-    this.setState({articles:receivedJson.articles,page:this.state.page - 1})
-    
+      },1500)
+      if(receivedJson.status === "error"){
+            this.setState({nextDisabled: true});
+            return;
+      }
+      window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+      this.setState({articles:receivedJson.articles})
   }
-
-  
 
 
   render() {
     return (
       <div className=" container center my-2 ">
-        <h2 className="container  center">News Monkey Top Headlines</h2>
+        <h2 className="container  center" style={{marginTop:"5rem"}}>News Monkey Top Headlines</h2>
         {this.state.loader && <Loader/>}
         <div className=" d-flex justify-content-center align-items-center flex-wrap">
           {!this.state.loader&& this.state.articles && this.state.articles.map((element) => {
@@ -119,6 +147,15 @@ export class News extends Component {
                 }
                 imageUrl={
                  element.urlToImage?element.urlToImage:"https://thumbs.dreamstime.com/b/news-header-background-title-abstract-colorful-global-map-text-hightech-design-blue-colorful-template-90494676.jpg"
+                }
+                author={
+                  element.author?element.author:"Unknown"
+                }
+                date = {
+                  element.publishedAt?element.publishedAt:"Unknown"
+                }
+                source = {
+                  element.source.name?element.source.name:"Unknown"
                 }
                 
               />
