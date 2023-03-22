@@ -1,68 +1,157 @@
+import "./App.css";
+import Navbar from "./components/Navbar";
+import News from "./components/News";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import LoadingBar from "react-top-loading-bar";
 
-import './App.css';
-import Navbar from './components/Navbar';
-import News from './components/News';
-import { BrowserRouter as Router ,Route, Routes } from 'react-router-dom';
+import React, { Component } from "react";
 
+export default class App extends Component {
+  apiKey = process.env.REACT_APP_NEWS_API;
 
-function App() {
-  return (
-    <div className="App">
-      <Router>
-        <Navbar/>
-        <Routes>
-            <Route    path='/' element={<News key={'general'}  MaxNewsPerPage={21} Currcountry='in' Currcategory='general'/>}/>
-            <Route   path='/sports' element={<News key={"sports"}   MaxNewsPerPage={21} Currcountry='in' Currcategory='sports'/>}/>
-            <Route    path='/entertainment' element={<News key={"entertainment"}  MaxNewsPerPage={21} Currcountry='in' Currcategory='entertainment'/>}/>
-            <Route   path='/business' element={<News  key={"business"} MaxNewsPerPage={21} Currcountry='in' Currcategory='business'/>}/>
-            <Route   path='/technology' element={<News  key={"technology"} MaxNewsPerPage={21} Currcountry='in' Currcategory='technology'/>}/>
-            <Route   path='/science' element={<News  key={"science"} MaxNewsPerPage={21} Currcountry='in' Currcategory='science'/>}/>
-            <Route   path='/health' element={<News  key={"health"}  MaxNewsPerPage={21} Currcountry='in' Currcategory='health'/>}/>
+  state = {
+    progress: 0,
+    searchContent:"",
+    searchVal: false
+  };
+  setProgress = (progress) => {
+    this.setState({
+      progress: progress,
+    });
+  
+  };
+
+  setSearchContent = (searchData,sVal) => {
+    this.setState({
+      searchContent : searchData,
+      searchVal: sVal
+
+    })
+    console.log(this.state.searchContent)
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <Router>
+          <Navbar searchContent = {this.setSearchContent}/>
+          <LoadingBar color="#f11946" progress={this.state.progress} />
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <News
+                  setProgress={this.setProgress}
+                  key={"general"}
+                  MaxNewsPerPage={21}
+                  Currcountry="in"
+                  Currcategory="general"
+                  apiKey={this.apiKey}
+                  searchEnable = {false}
+                />
+              }
+            />
+            <Route
+              path="/sports"
+              element={
+                <News
+                  setProgress={this.setProgress}
+                  key={"sports"}
+                  MaxNewsPerPage={21}
+                  Currcountry="in"
+                  Currcategory="sports"
+                  apiKey={this.apiKey}
+                  searchEnable = {false}
+                />
+              }
+            />
+            <Route
+              path="/entertainment"
+              element={
+                <News
+                  setProgress={this.setProgress}
+                  key={"entertainment"}
+                  MaxNewsPerPage={21}
+                  Currcountry="in"
+                  Currcategory="entertainment"
+                  apiKey={this.apiKey}
+                  searchEnable = {false}
+                />
+              }
+            />
+            <Route
+              path="/business"
+              element={
+                <News
+                  setProgress={this.setProgress}
+                  key={"business"}
+                  MaxNewsPerPage={21}
+                  Currcountry="in"
+                  Currcategory="business"
+                  apiKey={this.apiKey}
+                  searchEnable = {false}
+                />
+              }
+            />
+            <Route
+              path="/technology"
+              element={
+                <News
+                  setProgress={this.setProgress}
+                  key={"technology"}
+                  MaxNewsPerPage={21}
+                  Currcountry="in"
+                  Currcategory="technology"
+                  apiKey={this.apiKey}
+                  searchEnable = {false}
+                />
+              }
+            />
+            <Route
+              path="/science"
+              element={
+                <News
+                  setProgress={this.setProgress}
+                  key={"science"}
+                  MaxNewsPerPage={21}
+                  Currcountry="in"
+                  Currcategory="science"
+                  apiKey={this.apiKey}
+                  searchEnable = {false}
+                />
+              }
+            />
+            <Route
+              path="/health"
+              element={
+                <News
+                  setProgress={this.setProgress}
+                  key={"health"}
+                  MaxNewsPerPage={21}
+                  Currcountry="in"
+                  Currcategory="health"
+                  apiKey={this.apiKey}
+                  searchEnable = {false}
+                />
+              }
+            />
+            <Route
+              path="/search"
+              element={
+                <News
+                  setProgress={this.setProgress}
+                  key={this.searchContent}
+                  MaxNewsPerPage={21}
+                  Currcountry="in"
+                  Currcategory={this.state.searchContent}
+                  apiKey={this.apiKey}
+                  searchEnable = {true}
+                />
+              }
+            />
           </Routes>
-            
-          </Router>
-      {/* <Navbar/>
-        <News  MaxNewsPerPage={21} Currcountry='in' Currcategory='science'/> */}
-
-    </div>
-  );
+        </Router>
+      </div>
+    );
+  }
 }
-
-export default App; 
-
-
-    {/* <li className="nav-item">
-                <Link className="nav-link" href="/business">
-                  Business
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" href="/entertainment">
-                  Entertainment
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" href="/general">
-                  General
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" href="/health">
-                  Health
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" href="/sciences">
-                  Sciences
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" href="/sports">
-                  Sports
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" href="/technology">
-                  Technology
-                </Link>
-              </li> */}

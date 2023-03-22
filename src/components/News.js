@@ -5,11 +5,11 @@ import PropTypes from "prop-types";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 export class News extends Component {
-  static defaultProps = {
-    Currcountry: "in",
-    MaxNewsPerPage: 21,
-    Currcategory: "general",
-  };
+  // static defaultProps = {
+  //   Currcountry: "in",
+  //   MaxNewsPerPage: 21,
+  //   Currcategory: "general",
+  // };
 
   static propTypes = {
     Currcountry: PropTypes.string,
@@ -19,7 +19,9 @@ export class News extends Component {
 
   constructor(props) {
     super(props);
-    const { MaxNewsPerPage, Currcountry, Currcategory } = this.props;
+    const { MaxNewsPerPage, Currcountry, Currcategory ,searchEnable} = this.props;
+    
+    console.log(this.props)
     this.state = {
           articles: [],
           loader: true,
@@ -28,7 +30,9 @@ export class News extends Component {
           nextDisabled: false,
           country: Currcountry,
           category: Currcategory,
-          totalresults : 0
+          totalresults : 0,
+          searchEnable: searchEnable
+          
         };
 
     document.title = `${this.capitalize(Currcategory)} | My News Monkey `;
@@ -38,14 +42,19 @@ export class News extends Component {
   };
 
   async componentDidMount() {
+    this.props.setProgress(10)
     this.setState({ loader: true });
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.state.country}&category=${this.state.category}&apiKey=663be6ff529e406889d0fb6fd81cedf1&page=${this.state.page}&pageSize=${this.state.NewsPerPage}`;
+    let url = !this.state.searchEnable? `https://newsapi.org/v2/top-headlines?country=${this.state.country}&category=${this.state.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.state.NewsPerPage}`:
+    `https://newsapi.org/v2/everything?apiKey=${this.props.apiKey}&q=${this.state.category}`
+    ;
+    console.log(url)
     let data = await fetch(url);
-
+    this.props.setProgress(30)
     let receivedJson = await data.json();
-    // console.log(receivedJson.totalResults);
+    // console.log(receivedJson);
     // console.log(this.state.articles.length)
     this.setState({loader: false , articles: receivedJson.articles ,totalresults :receivedJson.totalResults});
+    this.props.setProgress(100)
   }
 
 
@@ -55,7 +64,11 @@ export class News extends Component {
   fetchMoreData = async () =>{
     this.setState({ loader: false });
     this.setState({page : this.state.page +1});
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.state.country}&category=${this.state.category}&apiKey=663be6ff529e406889d0fb6fd81cedf1&page=${this.state.page}&pageSize=${this.state.NewsPerPage}`;
+    let url = 
+    !this.state.searchEnable? 
+    this.props.search`https://newsapi.org/v2/top-headlines?country=${this.state.country}&category=${this.state.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.state.NewsPerPage}` 
+    :`https://newsapi.org/v2/everything?apiKey=${this.props.apiKey}&q=${this.state.category}`;
+    
     let data = await fetch(url);
     let receivedJson = await data.json();
 
@@ -76,7 +89,7 @@ export class News extends Component {
         </h2>
         {this.state.loader && <Loader/>}
           <InfiniteScroll
-            dataLength={this.state.articles.length}
+            dataLength={this.state.articles.length?this.state.articles.length:0}
             next={this.fetchMoreData}
            hasMore = {this.state.articles.length<this.state.totalresults}
             loader={<Loader/>}>

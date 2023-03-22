@@ -1,12 +1,25 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 export default class Navbar extends Component {
+  constructor(props){
+    super(props)
+  
+  }
+
+  GoForSearch = () =>{
+    const input = document.getElementById("searchInput")
+
+    this.props.searchContent(input.value,false);
+    input.value = ""
+    
+  }
+
   render() {
     return (
-      <nav className="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+      <nav className="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid">
           <Link className="navbar-brand" to="/">
-            NewsMonkey-Web
+            News Web
           </Link>
           <button
             className="navbar-toggler"
@@ -59,13 +72,19 @@ export default class Navbar extends Component {
             </ul>
             <form className="d-flex">
               <input
+                id="searchInput"
                 className="form-control me-2"
                 type="search"
                 placeholder="Search"
                 aria-label="Search"
               />
-              <button className="btn btn-outline-success" type="submit">
-                Search
+              <button className="btn btn-outline-success" type="button" onClick={this.GoForSearch}>
+              <Link style={{
+                textDecoration:"none",
+                color:"white"
+              }} to="/search">
+                  Search
+                </Link>
               </button>
             </form>
           </div>
